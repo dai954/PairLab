@@ -25,7 +25,7 @@ def main():
     print(f"業界フィルター通過ペア数: {len(industry_pairs)}")
 
     # 3. cointegration検定
-    coint_pairs = filter_cointegrated_pairs(price_df, corr_pairs)
+    coint_pairs = filter_cointegrated_pairs(price_df, industry_pairs)
 
     print(f"cointegration通過ペア数: {len(coint_pairs)}")
 
