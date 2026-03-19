@@ -1,15 +1,14 @@
 import os
-import time
 import yfinance as yf
 import pandas as pd
-from config.settings import START_DATE
+from config.settings import START_DATE, MAX_TICKERS
 
 CACHE_FILE = "data/cache/price_cache.csv"
 
 def load_price_data(tickers, start=START_DATE):
 
     # テスト用制限
-    tickers = tickers[:10]
+    tickers = tickers[:MAX_TICKERS]
 
     print("=================")
     print(tickers)
@@ -58,6 +57,7 @@ def load_price_data(tickers, start=START_DATE):
         raise ValueError("クリーニング後データが空です")
 
     # キャッシュ保存
+    os.makedirs(os.path.dirname(CACHE_FILE), exist_ok=True)
     price.to_csv(CACHE_FILE)
 
     return price
