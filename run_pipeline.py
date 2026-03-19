@@ -1,6 +1,7 @@
-from universe.universe import load_universe
+from universe.universe import load_universe, load_universe_df, build_industry_map
 from data.data_loader import load_price_data
 from research.pair_finder import find_high_corr_pairs
+from research.industry_filter import filter_pairs_by_industry
 from research.cointegration import filter_cointegrated_pairs
 from research.spread_model import build_pair_model
 
@@ -14,6 +15,14 @@ def main():
     corr_pairs = find_high_corr_pairs(price_df)
 
     print(f"高相関ペア数: {len(corr_pairs)}")
+
+    # 業界情報読み込み
+    universe_df = load_universe_df()
+    industry_map = build_industry_map(universe_df, industry_col="33業種区分")
+
+    # 業界フィルター
+    industry_pairs = filter_pairs_by_industry(corr_pairs, industry_map)
+    print(f"業界フィルター通過ペア数: {len(industry_pairs)}")
 
     # 3. cointegration検定
     coint_pairs = filter_cointegrated_pairs(price_df, corr_pairs)

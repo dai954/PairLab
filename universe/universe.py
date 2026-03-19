@@ -44,3 +44,44 @@ def load_universe():
     print(f"{len(tickers)}銘柄読み込み")
 
     return tickers
+
+def load_universe_df() -> pd.DataFrame:
+    df = pd.read_csv(CSV_PATH)
+    df.columns = df.columns.str.strip()
+
+    if df.empty:
+        raise ValueError("CSVデータが空です")
+
+    return df
+
+
+def build_industry_map(df: pd.DataFrame, industry_col: str = "33業種区分") -> dict:
+    """
+    銘柄コード -> 業界名 の辞書を作る
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        JPX銘柄一覧
+    industry_col : str
+        "33業種区分" または "17業種区分"
+
+    Returns
+    -------
+    dict
+        例:
+        {
+            "7203.T": "輸送用機器",
+            "6758.T": "電気機器",
+        }
+    """
+    work = df.copy()
+
+    # コードを yfinance 形式に合わせる
+    work["ticker"] = work["コード"].astype(str).str.strip() + ".T"
+
+    # 業界情報が欠けている行は除外
+    work = work.dropna(subset=[industry_col])
+
+    industry_map = dict(zip(work["ticker"], work[industry_col]))
+    return industry_map

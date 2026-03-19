@@ -36,7 +36,7 @@ def fit_ols_spread(y: pd.Series, x: pd.Series) -> dict:
     return {
         "alpha": alpha,
         "beta": beta,
-        "residuals": residuals
+        "spread": residuals
     }
 
 
