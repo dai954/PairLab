@@ -1,4 +1,4 @@
-from universe.universe import load_universe, load_universe_df, build_industry_map
+from universe.universe import load_universe_tickers, load_universe_df, build_industry_map
 from data.data_loader import load_price_data
 from research.pair_finder import find_high_corr_pairs
 from research.industry_filter import filter_pairs_by_industry
@@ -8,7 +8,7 @@ from research.spread_model import build_pair_model
 
 def main():
     # 1. 価格データ読み込み
-    tickers = load_universe()
+    tickers = load_universe_tickers()
     price_df = load_price_data(tickers)
 
     # 2. 相関フィルター

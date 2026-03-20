@@ -1,9 +1,9 @@
-from universe.universe import load_universe
+from universe.universe import load_universe_tickers
 from data.data_loader import load_price_data
 from research.pair_finder import find_high_corr_pairs
 
 def main():
-    tickers = load_universe()
+    tickers = load_universe_tickers()
     price_df = load_price_data(tickers)
     pairs = find_high_corr_pairs(price_df, threshold=0.9)
     

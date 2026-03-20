@@ -4,7 +4,7 @@ import pandas as pd
 CSV_PATH = "data/raw/jpx_list.csv"
 XLS_PATH = "data/raw/jpx_list.xls"
 
-def load_universe():
+def load_universe_tickers():
 
     # CSVがなければExcelから作る
     if not os.path.exists(CSV_PATH):

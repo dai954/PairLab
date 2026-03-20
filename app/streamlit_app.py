@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import streamlit as st
 import pandas as pd
 
-from universe.universe import load_universe, build_industry_map, load_universe_df
+from universe.universe import load_universe_tickers, build_industry_map, load_universe_df
 from data.data_loader import load_price_data
 from research.pair_finder import find_high_corr_pairs
 from research.industry_filter import filter_pairs_by_industry
@@ -29,7 +29,7 @@ if not run:
     st.stop()
 
 with st.spinner("銘柄取得中..."):
-    tickers = load_universe()
+    tickers = load_universe_tickers()
 st.success(f"{len(tickers)}銘柄")
 
 with st.spinner("価格取得中..."):
