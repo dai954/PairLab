@@ -3,10 +3,12 @@ import yfinance as yf
 import pandas as pd
 from config.settings import START_DATE, MAX_TICKERS
 
-CACHE_FILE = "data/cache/price_cache.csv"
+# CACHE_FILE = "data/cache/price_cache.csv"
 
-def load_price_data(tickers, start=START_DATE):
+def load_price_data(tickers, start=START_DATE, end=None):
 
+    cache_path = f"data/cache/price_{start}_{end}.csv"
+    
     # テスト用制限
     tickers = tickers[:MAX_TICKERS]
 
@@ -14,8 +16,8 @@ def load_price_data(tickers, start=START_DATE):
     print(tickers)
 
     # キャッシュ確認
-    if os.path.exists(CACHE_FILE):
-        price = pd.read_csv(CACHE_FILE, index_col=0, parse_dates=True)
+    if os.path.exists(cache_path):
+        price = pd.read_csv(cache_path, index_col=0, parse_dates=True)
 
         if not price.empty:
             print("キャッシュ使用")
@@ -57,7 +59,7 @@ def load_price_data(tickers, start=START_DATE):
         raise ValueError("クリーニング後データが空です")
 
     # キャッシュ保存
-    os.makedirs(os.path.dirname(CACHE_FILE), exist_ok=True)
-    price.to_csv(CACHE_FILE)
+    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+    price.to_csv(cache_path)
 
     return price
