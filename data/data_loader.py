@@ -63,3 +63,29 @@ def load_price_data(tickers, start=START_DATE, end=None):
     price.to_csv(cache_path)
 
     return price
+
+def load_pair_data(ticker_y, ticker_x, start="2022-01-01"):
+
+    data = yf.download(
+        [ticker_y, ticker_x],
+        start=start
+    )["Close"]
+
+    data = data.dropna()
+
+    price_y = data[ticker_y]
+    price_x = data[ticker_x]
+
+    return price_y, price_x
+
+def load_test_pair():
+    # トヨタ（7203.T） - ホンダ（7267.T）
+    # みずほ（8411.T） - 三菱UFJ（8306.T）
+    # 東京エレクトロン（8035.T） - アドバンテスト（6857.T）
+    # toyota = "7203.T"
+    # honda = "7267.T"
+    mizuho = "8411.T"
+    mitsubishi = "8306.T"
+    # toere = "8035.T"
+    # advantest = "6857.T"
+    return load_pair_data(mizuho, mitsubishi)
