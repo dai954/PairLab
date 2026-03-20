@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import streamlit as st
 import pandas as pd
 
+from config.settings import START_DATE, CORR_THRESHOLD, PVALUE_THRESHOLD
 from universe.universe import load_universe_tickers, build_industry_map, load_universe_df
 from data.data_loader import load_price_data
 from research.pair_finder import find_high_corr_pairs
@@ -19,9 +20,9 @@ st.caption("日本株ペアトレード候補抽出ツール")
 
 with st.sidebar:
     st.header("設定")
-    start_date = st.text_input("開始日", "2023-01-01")
-    corr_th = st.slider("相関しきい値", 0.5, 0.99, 0.9)
-    pval_th = st.slider("cointegration p値", 0.001, 0.1, 0.05)
+    start_date = st.text_input("開始日", START_DATE)
+    corr_th = st.slider("相関しきい値", 0.5, 0.99, CORR_THRESHOLD)
+    pval_th = st.slider("cointegration p値", 0.001, 0.1, PVALUE_THRESHOLD)
     max_half_life = st.slider("half-life 上限", 1, 252, 60)
     run = st.button("実行")
 

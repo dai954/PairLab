@@ -15,6 +15,9 @@ def main():
     corr_pairs = find_high_corr_pairs(price_df)
 
     print(f"高相関ペア数: {len(corr_pairs)}")
+    print("===== 高相関ペア 上位20件 =====")
+    for s1, s2, corr in corr_pairs[:20]:
+        print(f"{s1} - {s2} : corr={corr:.4f}")
 
     # 業界情報読み込み
     universe_df = load_universe_df()

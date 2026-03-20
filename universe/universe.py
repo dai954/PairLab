@@ -19,6 +19,8 @@ def load_universe_tickers():
         if df.empty:
             raise ValueError("Excelデータが空です")
 
+        # ETF・ETN除外
+        df = df[~df["市場・商品区分"].astype(str).str.contains("ETF|ETN", na=False)]
         df.to_csv(CSV_PATH, index=False)
 
     # CSV読み込み
@@ -27,6 +29,9 @@ def load_universe_tickers():
 
     if df.empty:
         raise ValueError("CSVデータが空です")
+    
+    # ETF・ETN除外
+    df = df[~df["市場・商品区分"].astype(str).str.contains("ETF|ETN", na=False)]
 
     # カラムチェック
     if "コード" not in df.columns:
