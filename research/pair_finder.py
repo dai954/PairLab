@@ -24,3 +24,21 @@ def find_high_corr_pairs(price_df, threshold=CORR_THRESHOLD):
     pairs.sort(key=lambda x: x[2], reverse=True)
 
     return pairs
+
+def find_corr_pairs_within_industries(price_df, industry_groups, corr_threshold=CORR_THRESHOLD):
+    """
+    業界ごとに相関ペアを抽出する
+    """
+    all_corr_pairs = []
+
+    for industry, group_tickers in industry_groups.items():
+        if len(group_tickers) < 2:
+            continue
+
+        sub_price = price_df[group_tickers]
+        pairs = find_high_corr_pairs(sub_price, threshold=corr_threshold)
+
+        print(f"{industry}: {len(pairs)}ペア")
+        all_corr_pairs.extend(pairs)
+
+    return all_corr_pairs

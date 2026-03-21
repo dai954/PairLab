@@ -1,18 +1,16 @@
 import os
 import yfinance as yf
 import pandas as pd
-from config.settings import START_DATE, MAX_TICKERS
+from config.settings import START_DATE
 
 # CACHE_FILE = "data/cache/price_cache.csv"
 
-def load_price_data(tickers, start=START_DATE, end=None):
+def load_price_data(tickers, start, end=None):
 
     cache_path = f"data/cache/price_{start}_{end}.csv"
-    
-    # テスト用制限
-    tickers = tickers[:MAX_TICKERS]
 
     print("=================")
+    print(f"テスト用に絞った{len(tickers)}下記銘柄のprice読み込み")
     print(tickers)
 
     # キャッシュ確認
@@ -84,8 +82,11 @@ def load_test_pair():
     # 東京エレクトロン（8035.T） - アドバンテスト（6857.T）
     # toyota = "7203.T"
     # honda = "7267.T"
-    mizuho = "8411.T"
-    mitsubishi = "8306.T"
+    # mizuho = "8411.T"
+    # mitsubishi = "8306.T"
     # toere = "8035.T"
     # advantest = "6857.T"
-    return load_pair_data(mizuho, mitsubishi)
+    ando_hazama = "1719.T"
+    kashima_kensetsu = "1812.T"
+    
+    return load_pair_data(ando_hazama, kashima_kensetsu)

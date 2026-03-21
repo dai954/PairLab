@@ -46,7 +46,7 @@ def load_universe_tickers():
 
     tickers = (codes + ".T").tolist()
 
-    print(f"{len(tickers)}銘柄読み込み")
+    print(f"{len(tickers)}銘柄のticker読み込み")
 
     return tickers
 

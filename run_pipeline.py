@@ -1,7 +1,8 @@
+from config.settings import MAX_TICKERS, START_DATE
 from universe.universe import load_universe_tickers, load_universe_df, build_industry_map
 from data.data_loader import load_price_data
-from research.pair_finder import find_high_corr_pairs
-from research.industry_filter import filter_pairs_by_industry
+from research.pair_finder import find_high_corr_pairs, find_corr_pairs_within_industries
+from research.industry_filter import filter_pairs_by_industry, group_tickers_by_industry
 from research.cointegration import filter_cointegrated_pairs
 from research.spread_model import build_pair_model
 
@@ -9,26 +10,39 @@ from research.spread_model import build_pair_model
 def main():
     # 1. 価格データ読み込み
     tickers = load_universe_tickers()
-    price_df = load_price_data(tickers)
+    # テスト用制限
+    tickers = tickers[:MAX_TICKERS]
+    price_df = load_price_data(tickers, START_DATE)
 
     # 2. 相関フィルター
-    corr_pairs = find_high_corr_pairs(price_df)
+    # corr_pairs = find_high_corr_pairs(price_df)
 
-    print(f"高相関ペア数: {len(corr_pairs)}")
-    print("===== 高相関ペア 上位20件 =====")
-    for s1, s2, corr in corr_pairs[:20]:
-        print(f"{s1} - {s2} : corr={corr:.4f}")
+    # print(f"高相関ペア数: {len(corr_pairs)}")
+    # print("===== 高相関ペア 上位20件 =====")
+    # for s1, s2, corr in corr_pairs[:20]:
+    #     print(f"{s1} - {s2} : corr={corr:.4f}")
 
     # 業界情報読み込み
     universe_df = load_universe_df()
     industry_map = build_industry_map(universe_df, industry_col="33業種区分")
 
     # 業界フィルター
-    industry_pairs = filter_pairs_by_industry(corr_pairs, industry_map)
-    print(f"業界フィルター通過ペア数: {len(industry_pairs)}")
+    # industry_pairs = filter_pairs_by_industry(corr_pairs, industry_map)
+    # print(f"業界フィルター通過ペア数: {len(industry_pairs)}")
+    
+    # price_dfでダウンロードされた分のtickerだけに絞る
+    available_tickers = price_df.columns.tolist()
+    industry_groups = group_tickers_by_industry(available_tickers, industry_map)
+
+    all_corr_pairs = find_corr_pairs_within_industries(
+    price_df,
+    industry_groups
+    )
+
+    print(f"全業界合計ペア数: {len(all_corr_pairs)}")
 
     # 3. cointegration検定
-    coint_pairs = filter_cointegrated_pairs(price_df, industry_pairs)
+    coint_pairs = filter_cointegrated_pairs(price_df, all_corr_pairs)
 
     print(f"cointegration通過ペア数: {len(coint_pairs)}")
 
