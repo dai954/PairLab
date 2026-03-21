@@ -1,13 +1,11 @@
 import os
 import yfinance as yf
 import pandas as pd
-from config.settings import START_DATE
 
-# CACHE_FILE = "data/cache/price_cache.csv"
 
 def load_price_data(tickers, start, end=None):
-
-    cache_path = f"data/cache/price_{start}_{end}.csv"
+    
+    cache_path = f"data/cache/price_{start}_{end}_{len(tickers)}.csv"
 
     print("=================")
     print(f"テスト用に絞った{len(tickers)}下記銘柄のprice読み込み")
