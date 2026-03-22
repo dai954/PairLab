@@ -71,17 +71,6 @@ def calculate_half_life(spread: pd.Series) -> float:
     return half_life
 
 
-def calculate_zscore(spread: pd.Series, window: int = 20) -> pd.Series:
-    """
-    spread の rolling z-score を計算する
-    """
-    mean = spread.rolling(window=window).mean()
-    std = spread.rolling(window=window).std()
-
-    std = std.replace(0, np.nan)
-    zscore = (spread - mean) / std
-    return zscore
-
 def build_pair_model(price_df: pd.DataFrame, s1: str, s2: str) -> dict:
     log_pair = np.log(price_df[[s1, s2]].dropna())
     fitted = fit_ols_spread(log_pair[s1], log_pair[s2])
